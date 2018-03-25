@@ -1,28 +1,38 @@
+
+let store = {};
+
+let findFunc = async (key)=>{
+    return store[key];
+};
+let storeFunc = async (key, value) =>{
+    store[key] = value;
+};
+let collatorFunc = async (data) => {
+    return data;
+};
+
 class Assemble {
     constructor(){
-        this.store = {};
+    }
+    // setters
+    find(func){
+        findFunc = func;
+    }
+    store(func){
+        storeFunc = func;
     }
 
-    async collator(eventData){
-        return eventData;
+    collator(func){
+        collatorFunc = func;
     }
 
-    async event(storeName, searchKey, data){
-
-        if(!Array.isArray(this.store[storeName])){
-            this.store[storeName] = [];
-        }
-
-        this.store[storeName].push({
-            key: searchKey,
-            data: await this.collator(data)
-        });
-        console.log("Store: " + JSON.stringify(this.store))
+    // event handler.
+    async event(key, data){
+        storeFunc(key, await collatorFunc(data));
     }
 
-    async search(storeName, key){
-        console.log("searching...", storeName, key, JSON.stringify(this.store));
-        return this.store[storeName].find((d)=> d.key == key );
+    async search(key){
+        return findFunc(key);
     }
 
 }
