@@ -1,7 +1,7 @@
-let Assemble = require('./assemble')
+let Composer = require('./composer')
 let request = require('r2');
 
-let assemble = new Assemble();
+let composer = new Composer();
 
 async function getPupResults(item, page) {
     let results = [];
@@ -14,7 +14,7 @@ async function getPupResults(item, page) {
 }
 
 
-assemble.collator(async (data) => {
+composer.compose(async (data) => {
     data.collationStarted = new Date();
     let page = 1
     let result = await getPupResults(data.item, page);
@@ -32,4 +32,4 @@ assemble.collator(async (data) => {
     return data;
 })
 
-module.exports = assemble;
+module.exports = composer;
